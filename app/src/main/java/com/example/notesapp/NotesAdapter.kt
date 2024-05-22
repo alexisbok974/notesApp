@@ -2,6 +2,7 @@ package com.example.notesapp
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,8 +53,16 @@ class NotesAdapter(private var notes: List<Note>, context: Context) : RecyclerVi
     }
 
     fun refreshData(newNotes: List<Note>) {
+        Log.d("NotesAdapter", "refreshData called with ${newNotes.size} notes")
         notes = newNotes
         notifyDataSetChanged()
+        Log.d("NotesAdapter", "RecyclerView updated with ${notes.size} notes")
+    }
+
+    companion object {
+        fun refreshData(notes: MutableList<Note>) {
+
+        }
     }
 
 
