@@ -27,29 +27,37 @@ class MainActivity : AppCompatActivity() {
     private lateinit var notesAdapter: NotesAdapter
 
 
+
+    /**
+     * Appelée lors de la création initiale de l'activité.
+     * @param savedInstanceState Si l'activité est re-initialisée après avoir été
+     * précédemment fermée, ce Bundle contient les données qu'elle avait fournies récemment.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        // Initialisation du helper de base de données et de la base de donnée
         dbHelper = NotesDatabaseHelper(this)
         database = dbHelper.readableDatabase
         notesAdapter = NotesAdapter(dbHelper.getAllNotes(), this)
 
+        // Initialisation des vues du fichier xml
         searchView = findViewById(R.id.searchView)
         recyclerView = findViewById(R.id.notesRecyclerView)
 
-
+        // Configuration de RecyclerView avec un LinearLayoutManager et le NotesAdapter
         binding.notesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.notesRecyclerView.adapter = notesAdapter
 
+        // Configuration du bouton d'ajout pour lancer AddNoteActivity
         binding.addButton.setOnClickListener {
             val intent = Intent(this, AddNoteActivity::class.java)
             startActivity(intent)
         }
 
-
+        // Configuration du SearchView pour filtrer les notes en fonction de l'entrée utilisateur
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
@@ -68,6 +76,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Recherche dans la base de données des notes correspondant à la requête
+     * et met à jour le RecyclerView.
+     * @param query La requête de recherche entrée par l'utilisateur.
+     */
     private fun searchNotes(query: String) {
         Log.d("MainActivity", "Searching for: $query")
         database?.let { db ->
@@ -88,11 +101,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Ferme le helper de base de données lorsque l'activité est détruite.
+     */
     override fun onDestroy() {
         dbHelper.close()
         super.onDestroy()
     }
 
+    /**
+     * Rafraîchit les données des notes lorsque l'activité est reprise.
+     */
     override fun onResume() {
         super.onResume()
         notesAdapter.refreshData(dbHelper.getAllNotes())

@@ -42,7 +42,7 @@
     <EditText
         android:id="@+id/contentEditText"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="match_parent"
         android:hint="Entrer la description"
         android:gravity="top"
         android:padding="12dp"
@@ -51,14 +51,5 @@
         android:layout_below="@id/titleEditText"
         android:layout_marginTop="12dp"/>
 
-    <!-- Champ de rappel -->
-    <Button
-        android:id="@+id/remindButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choisir un rappel"
-        android:layout_below="@id/contentEditText"
-        android:layout_marginTop="16dp"
-        android:onClick="showReminderPicker"/>
 
 </RelativeLayout>
